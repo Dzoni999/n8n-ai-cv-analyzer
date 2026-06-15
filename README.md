@@ -1,5 +1,10 @@
 # 📄 AI CV Analyzer
 
+![n8n](https://img.shields.io/badge/n8n-latest-FF6D5A?style=flat-square&logo=n8n )
+![LM Studio](https://img.shields.io/badge/LM_Studio-Local_AI-blue?style=flat-square )
+![Qwen](https://img.shields.io/badge/Model-Qwen_3_4B-purple?style=flat-square )
+![License](https://img.shields.io/badge/license-MIT-green?style=flat-square )
+
 AI-powered CV Analyzer built with **n8n**, **LM Studio**, and **Qwen 3 4B**.
 
 This workflow automatically extracts and analyzes information from PDF resumes, providing structured insights about a candidate's background, skills, experience level, strengths, and potential areas for improvement.
