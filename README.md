@@ -100,7 +100,7 @@ Respond To Webhook
 ### Installation
 
 1. Clone this repository.
-2. Import `workflow.json` into n8n.
+2. Import `CV Analyzer_workflow.json` into n8n.
 3. Configure the Chat Model node to use your LM Studio endpoint.
 4. Load the Qwen model in LM Studio.
 5. Activate the workflow.
