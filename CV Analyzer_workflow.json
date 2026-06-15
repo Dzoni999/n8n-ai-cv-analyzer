@@ -1,0 +1,181 @@
+{
+  "name": "CV Analyzer",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "analyze-cv",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -768,
+        32
+      ],
+      "id": "b7a6ec83-ab4c-4b19-bfd7-7c814e4d8870",
+      "name": "Webhook",
+      "webhookId": "f40a6555-b71f-4829-8c7e-c23dbf60d481"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -560,
+        32
+      ],
+      "id": "8193fbc7-5326-42ed-9e19-211196a033a8",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const text = $json.text || '';\n\nreturn {\n  cv_text: text.substring(0, 2000)\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -352,
+        32
+      ],
+      "id": "1756449b-d430-4414-82ab-7af4c4a32b59",
+      "name": "Prepare CV"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        272,
+        32
+      ],
+      "id": "78399d2f-8118-409f-bbe4-5abc9b313e4a",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a CV analyzer.\n\nAnalyze the CV and extract information.\n\nDo NOT rewrite the CV.\nDo NOT improve the CV.\nDo NOT correct the CV.\n\nReturn only:\n\nSummary:\nSkills:\nExperience Level:\nStrengths:\nPotential Areas for Improvement:\n\nCV:\n\n{{ $('Prepare CV').first().json.cv_text }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.8,
+      "position": [
+        -80,
+        32
+      ],
+      "id": "9bb09f14-8089-4fe8-b447-6980651f5a0c",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "qwen/qwen3-4b-2507",
+          "mode": "list",
+          "cachedResultName": "qwen/qwen3-4b-2507"
+        },
+        "responsesApiEnabled": false,
+        "options": {
+          "timeout": 180000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -160,
+        240
+      ],
+      "id": "3276eaec-bd4a-474a-a04c-264f14aa8fa1",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "deR5qRa5IZXE8M6K",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Prepare CV",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare CV": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "41a59532-241c-4e76-b066-9e9889d83173",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad53659a185e2e2335e56beb9ccf566f2ffd472d78a8eaf71a66ebfc5ec528b3"
+  },
+  "id": "ZfVbtpLlTaRT0Qk5",
+  "tags": []
+}
