@@ -105,7 +105,9 @@ Respond To Webhook
 
 ## 📸 Screenshot
 
-<img src="workflow_ss.png" width="100%">
+<p align="center">
+  <img src="cv_analyzer_workflow.png" alt="AI CV Analyzer Workflow" width="100%">
+</p>
 
 ---
 
